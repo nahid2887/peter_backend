@@ -128,12 +128,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+import os
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
-
+STATIC_URL = '/static/'
+# STATICFILES_DIRS removed for Docker deployment
+STATIC_ROOT = '/code/staticfiles'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -205,9 +205,8 @@ SIMPLE_JWT = {
 }
 
 # Media files
-import os
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/code/media'
 
 # Custom user model
 AUTH_USER_MODEL = 'account.User'
@@ -222,13 +221,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nahid2887@gmail.com'
 EMAIL_HOST_PASSWORD = 'qsqe dgvs qywh umbz'  # Not your Gmail password!
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
-STATIC_ROOT = BASE_DIR / "staticfiles"
 # CORS Settings - Allow all for testing
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
