@@ -222,7 +222,13 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nahid2887@gmail.com'
 EMAIL_HOST_PASSWORD = 'qsqe dgvs qywh umbz'  # Not your Gmail password!
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # CORS Settings - Allow all for testing
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
