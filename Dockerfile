@@ -28,6 +28,9 @@ COPY event/ ./event/
 COPY media/ ./media/
 COPY manage.py ./
 
+# Create media directory structure with proper permissions
+RUN mkdir -p /code/media/profile_photos && \
+    chmod -R 755 /code/media
 
 # Copy .env file
 COPY .env .env

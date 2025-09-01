@@ -21,6 +21,7 @@ services:
     volumes:
       - .:/code
       - ./staticfiles:/code/staticfiles
+      - ./media:/code/media
     ports:
       - "8000:8000"
     env_file:

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*58ft6zvtg741zznl-gwmg+ah(d$l960k@!t329zm7fyvvo-65'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-*58ft6zvtg741zznl-gwmg+ah(d$l960k@!t329zm7fyvvo-65')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '10.10.13.27']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0,10.10.13.27,72.60.26.57').split(',')
 
 
 # Application definition
@@ -92,8 +94,12 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -213,15 +219,16 @@ AUTH_USER_MODEL = 'account.User'
 
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-# Replace these with your own credentials
-EMAIL_HOST_USER = 'nahid2887@gmail.com'
-EMAIL_HOST_PASSWORD = 'qsqe dgvs qywh umbz'  # Not your Gmail password!
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=config('EMAIL_HOST_USER', default=''))
+CSRF_TRUSTED_ORIGINS = [
+    "https://72.60.26.57",
+    "http://72.60.26.57",
+]
 # CORS Settings - Allow all for testing
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
@@ -245,11 +252,3 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # CSRF Settings - Trusted origins
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000", 
-    "http://10.10.13.27:3000",
-    "http://10.10.13.27:8000",
-]
-
-
