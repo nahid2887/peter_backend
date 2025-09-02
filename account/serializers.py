@@ -61,6 +61,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop('confirm_password')
         profile_photo = validated_data.pop('profile_photo', None)
         
+        # Normalize email for consistency
+        from django.contrib.auth.models import BaseUserManager
+        validated_data['email'] = BaseUserManager.normalize_email(validated_data['email'])
+        
         user = User.objects.create_user(
             email=validated_data['email'],
             full_name=validated_data['full_name'],
@@ -79,7 +83,11 @@ class LoginSerializer(serializers.Serializer):
         password = attrs.get('password')
 
         if email and password:
-            user = authenticate(email=email, password=password)
+            # Normalize email to handle case sensitivity
+            from django.contrib.auth.models import BaseUserManager
+            normalized_email = BaseUserManager.normalize_email(email)
+            
+            user = authenticate(email=normalized_email, password=password)
             if not user:
                 raise serializers.ValidationError('Invalid credentials.')
             if not user.is_active:

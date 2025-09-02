@@ -25,7 +25,6 @@ COPY account/ ./account/
 COPY calender/ ./calender/
 COPY chat/ ./chat/
 COPY event/ ./event/
-COPY media/ ./media/
 COPY manage.py ./
 
 # Create media directory structure with proper permissions
@@ -41,5 +40,5 @@ COPY .env .env
 # Expose port (Django default)
 EXPOSE 8000
 
-# Start server
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Start server with daphne (supports WebSocket for chat)
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "core.asgi:application"]
